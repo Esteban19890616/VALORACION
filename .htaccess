@@ -1,0 +1,43 @@
+# SER INTEGRAL 360 — Configuración Apache/LiteSpeed (Hostinger)
+Options -Indexes
+DirectoryIndex index.html
+AddDefaultCharset utf-8
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # 1. Forzar HTTPS (Hostinger incluye certificado SSL gratuito; actívelo antes en hPanel → Seguridad → SSL).
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:\d+)?$
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # 2. Modo servidor: el navegador recibe la configuración de la API, nunca la del prototipo local.
+  RewriteRule ^js/entorno\.js$ api/entorno.php [L]
+
+  # 3. Bloquear archivos que no son parte del sitio público.
+  RewriteRule (^|/)\. - [F]
+  RewriteRule ^(backend|database|docs|tests|tools|node_modules|dist|si360-privado)(/|$) - [F]
+  RewriteRule \.(md|sql|bat|sh|py|mjs|log|lock|bak|zip|ya?ml|ini|env)$ - [F,NC]
+  RewriteRule ^(package(-lock)?\.json|composer\.(json|lock)|config\.php)$ - [F,NC]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "same-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" "expr=%{HTTPS} == 'on'"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; frame-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+  <FilesMatch "\.(html|js)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# Límites de PHP (método .htaccess documentado por Hostinger). El respaldo a importar puede ser grande.
+# En un Apache con PHP-FPM (no Hostinger) estas líneas causan error 500: elimínelas allí.
+php_value upload_max_filesize 16M
+php_value post_max_size 100M
+php_value memory_limit 512M
+php_value max_execution_time 180
+php_flag display_errors Off

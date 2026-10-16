@@ -1,0 +1,66 @@
+/* SER INTEGRAL 360 — Tokens de diseño.
+   Concepto: consola de expediente. Riel lateral azul institucional fijo; área de trabajo
+   clara sobre gris levemente azulado; datos en tipografía monoespaciada; color semántico
+   (ok / aviso / crítico) separado del acento corporativo. */
+:root {
+  /* Color */
+  --azul-900: #0b2340;
+  --azul-800: #12345c;
+  --azul-600: #1f5a96;
+  --acento: #2f7fc8;
+  --acento-suave: #e3eef9;
+  --fondo: #f1f4f7;
+  --superficie: #ffffff;
+  --superficie-2: #f7f9fb;
+  --texto: #1d2733;
+  --texto-2: #4a5867;
+  --texto-3: #6f7d8c;
+  --linea: #dbe2ea;
+  --linea-fuerte: #c3cdd8;
+  --grafito: #2b333d;
+  --ok: #1e7a4f;       --ok-fondo: #e3f3ea;
+  --aviso: #8a5a00;    --aviso-fondo: #fdf1d8;
+  --critico: #b3261e;  --critico-fondo: #fbe7e5;
+  --info: #1f5a96;     --info-fondo: #e3eef9;
+  --graf-1: #4a7fb5;
+  --lateral-fondo: var(--azul-900);
+  --lateral-texto: #c9d6e4;
+  --lateral-activo: #1b4677;
+  --logo-fondo: #12345c; --logo-trazo: #ffffff; --logo-acento: #7fb6ea;
+  --sombra: 0 1px 2px rgb(11 35 64 / .06), 0 4px 14px rgb(11 35 64 / .06);
+  --foco: 0 0 0 3px rgb(47 127 200 / .35);
+
+  /* Tipografía */
+  --f-titulo: "Source Serif 4", "Iowan Old Style", Georgia, serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-datos: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --t-xs: .75rem; --t-sm: .8125rem; --t-base: .9375rem; --t-md: 1.0625rem; --t-lg: 1.375rem; --t-xl: 1.875rem; --t-kpi: 2rem;
+
+  /* Espaciado y forma */
+  --e-1: 4px; --e-2: 8px; --e-3: 12px; --e-4: 16px; --e-5: 24px; --e-6: 32px; --e-7: 48px;
+  --radio: 6px; --radio-g: 10px;
+  --ancho-lateral: 248px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --acento: #6aa9e6; --acento-suave: #17304d;
+    --fondo: #0d1520; --superficie: #141e2b; --superficie-2: #182433;
+    --texto: #e3e9f0; --texto-2: #a9b6c4; --texto-3: #8293a5; --linea: #253447; --linea-fuerte: #34465c; --grafito: #c9d3dd;
+    --ok: #6cc59a; --ok-fondo: #12301f; --aviso: #e8b54a; --aviso-fondo: #33270c; --critico: #f08a80; --critico-fondo: #3a1714; --info: #8bbcec; --info-fondo: #17304d;
+    --graf-1: #6aa0d6; --lateral-fondo: #08182b; --lateral-texto: #b4c4d6; --lateral-activo: #163a63;
+    --logo-fondo: #163a63;
+    --sombra: 0 1px 2px rgb(0 0 0 / .3); --foco: 0 0 0 3px rgb(106 169 230 / .4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --acento: #6aa9e6; --acento-suave: #17304d;
+  --fondo: #0d1520; --superficie: #141e2b; --superficie-2: #182433;
+  --texto: #e3e9f0; --texto-2: #a9b6c4; --texto-3: #8293a5; --linea: #253447; --linea-fuerte: #34465c; --grafito: #c9d3dd;
+  --ok: #6cc59a; --ok-fondo: #12301f; --aviso: #e8b54a; --aviso-fondo: #33270c; --critico: #f08a80; --critico-fondo: #3a1714; --info: #8bbcec; --info-fondo: #17304d;
+  --graf-1: #6aa0d6; --lateral-fondo: #08182b; --lateral-texto: #b4c4d6; --lateral-activo: #163a63;
+  --logo-fondo: #163a63;
+  --sombra: 0 1px 2px rgb(0 0 0 / .3); --foco: 0 0 0 3px rgb(106 169 230 / .4);
+  color-scheme: dark;
+}

@@ -1,0 +1,14 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+# Respaldos con datos personales: nunca al repositorio
+SI360_*.json
+backend/config.php
+backend/storage/
+dist/
+
+# Configuración privada del servidor
+backend/config.local.php
+si360-privado/
+config.php

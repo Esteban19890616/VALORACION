@@ -1,0 +1,7 @@
+# SER INTEGRAL 360 — API. Toda solicitud /api/v1/... la atiende index.php
+Options -Indexes
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^v1/?(.*)$ index.php?ruta=$1 [B,QSA,L]
+  RewriteRule ^(?!index\.php|entorno\.php) - [F]
+</IfModule>

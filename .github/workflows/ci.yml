@@ -1,0 +1,63 @@
+# SER INTEGRAL 360 — Integración continua: se ejecuta en cada push y pull request.
+name: Pruebas
+on:
+  push:
+  pull_request:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: raiz_ci
+          MYSQL_DATABASE: si360_test
+          MYSQL_USER: si360
+          MYSQL_PASSWORD: clave_ci
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -praiz_ci"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql, mbstring, fileinfo, zlib
+          tools: none
+
+      - name: Pruebas unitarias (motor, planes, PDF, seguridad)
+        run: npm test
+
+      - name: Sintaxis PHP
+        run: for f in $(find backend api tools -name '*.php'); do php -l "$f" || exit 1; done
+
+      - name: Esquema generado coincide con database/schema.sql
+        run: |
+          php tools/generar-esquema.php
+          git diff --exit-code database/schema.sql
+
+      - name: Configuración de pruebas
+        run: |
+          mkdir -p "$RUNNER_TEMP/si360-privado"
+          cat > "$RUNNER_TEMP/si360-privado/config.php" <<'PHP'
+          <?php
+          return [
+            'db' => ['dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=si360_test;charset=utf8mb4', 'usuario' => 'si360', 'clave' => 'clave_ci'],
+            'depuracion' => true,
+          ];
+          PHP
+          echo "SI360_CONFIG=$RUNNER_TEMP/si360-privado/config.php" >> "$GITHUB_ENV"
+
+      - name: Pruebas de integración de la API (PHP + MySQL 8)
+        run: SI360_DB=si360_test SI360_MYSQL_CMD="mysql -h127.0.0.1 -uroot -praiz_ci" tests/api.sh
+
+      - name: Registro de errores del servidor (si algo falló)
+        if: failure()
+        run: cat /tmp/si360-php.log "$RUNNER_TEMP"/si360-privado/registro/errores.log 2>/dev/null || true

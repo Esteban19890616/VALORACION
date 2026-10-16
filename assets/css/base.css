@@ -1,0 +1,25 @@
+/* Base: reinicio, tipografía y utilidades. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--fondo); color: var(--texto); font: 400 var(--t-base)/1.55 var(--f-texto); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { margin: 0; line-height: 1.25; text-wrap: balance; color: var(--texto); }
+h1 { font: 600 var(--t-xl)/1.2 var(--f-titulo); letter-spacing: -.01em; }
+h2 { font-size: var(--t-md); font-weight: 600; }
+h3 { font-size: var(--t-sm); font-weight: 600; }
+p { margin: 0; }
+a { color: var(--acento); }
+code, .mono { font-family: var(--f-datos); font-size: .92em; font-variant-numeric: tabular-nums; }
+code { background: var(--superficie-2); border: 1px solid var(--linea); border-radius: 4px; padding: 0 4px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: none; box-shadow: var(--foco); border-radius: 4px; }
+img { max-width: 100%; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.ico { width: 18px; height: 18px; flex: none; }
+.ico-grande { width: 28px; height: 28px; }
+.sub { color: var(--texto-2); }
+.nota { color: var(--texto-3); font-size: var(--t-sm); display: flex; gap: var(--e-2); align-items: flex-start; }
+.nota .ico { width: 15px; height: 15px; margin-top: 2px; }
+.eyebrow { font-size: var(--t-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--texto-3); }
+.txt-alerta { color: var(--aviso); font-weight: 500; }
+.texto-largo { white-space: pre-wrap; max-width: 65ch; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

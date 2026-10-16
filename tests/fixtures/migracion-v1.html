@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Fixture: base local versión 1</title></head>
+<body>
+<p id="estado">Creando base de datos de la versión 0.1 (IndexedDB v1)…</p>
+<script type="module">
+// Prueba de migración: crea la base con la estructura exacta de la versión 0.1.0 y un registro de ejemplo.
+import { hashContrasena } from '../../js/core/crypto.js';
+const V1 = {
+  usuarios: [['email', 'email', { unique: true }], ['rol', 'rol']],
+  empresas: [['nit', 'nit'], ['codigo', 'codigo', { unique: true }], ['estado', 'estado'], ['asesorId', 'asesorId']],
+  documentos: [['empresaId', 'empresaId']],
+  requisitos: [['codigo', 'codigo'], ['campo', 'campo'], ['catalogoVersion', 'catalogoVersion']],
+  catalogos: [['estado', 'estado']],
+  diagnosticos: [['empresaId', 'empresaId'], ['estado', 'estado'], ['asesorId', 'asesorId']],
+  respuestas: [['diagnosticoId', 'diagnosticoId']],
+  evidencias: [['empresaId', 'empresaId'], ['diagnosticoId', 'diagnosticoId']],
+  hallazgos: [['empresaId', 'empresaId'], ['diagnosticoId', 'diagnosticoId']],
+  planes: [['empresaId', 'empresaId']],
+  actividades: [['empresaId', 'empresaId'], ['planId', 'planId']],
+  horas: [['empresaId', 'empresaId'], ['actividadId', 'actividadId']],
+  auditoria: [['fecha', 'fecha'], ['entidad', 'entidad'], ['usuarioId', 'usuarioId']],
+};
+const ahora = new Date().toISOString();
+const credencial = await hashContrasena('ClaveVersionUno1');
+await new Promise((ok, fail) => indexedDB.deleteDatabase('serintegral360').onsuccess = ok);
+const r = indexedDB.open('serintegral360', 1);
+r.onupgradeneeded = () => {
+  const db = r.result;
+  for (const [n, idx] of Object.entries(V1)) { const os = db.createObjectStore(n, { keyPath: 'id' }); idx.forEach(([a, b, o]) => os.createIndex(a, b, o || {})); }
+  db.createObjectStore('borradores', { keyPath: 'clave' }); db.createObjectStore('meta', { keyPath: 'clave' });
+};
+r.onsuccess = () => {
+  const db = r.result; const tx = db.transaction(['usuarios', 'empresas', 'meta', 'auditoria'], 'readwrite');
+  tx.objectStore('usuarios').put({ id: 'u-v1', nombre: 'Administrador Versión Uno', email: 'admin@v1.co', rol: 'administrador', estado: 'activo', credencial, debeCambiarContrasena: false, intentosFallidos: 0, creadoEn: ahora, actualizadoEn: ahora, version: 1 });
+  tx.objectStore('empresas').put({ id: 'e-v1', codigo: 'EMP-0001', razonSocial: 'Empresa Creada en Versión Uno S.A.S.', nit: '890903938', dv: 8, nitFormato: '890.903.938-8', trabajadores: 12, claseRiesgo: 'II', municipio: 'Medellín', estado: 'activa', sedes: [], creadoEn: ahora, actualizadoEn: ahora, version: 1 });
+  tx.objectStore('meta').put({ clave: 'consecutivoEmpresa', valor: 1 });
+  tx.objectStore('auditoria').put({ id: 'a-v1', fecha: ahora, usuarioId: 'u-v1', usuarioNombre: 'Administrador Versión Uno', usuarioRol: 'administrador', accion: 'crear', entidad: 'empresas', entidadId: 'e-v1', cambios: [], motivo: 'Registro de la versión 0.1', resultado: 'exitoso' });
+  tx.oncomplete = () => { db.close(); document.getElementById('estado').textContent = 'LISTO v1'; };
+};
+</script>
+</body></html>

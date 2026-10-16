@@ -1,0 +1,327 @@
+/**
+ * Catálogo normativo base de SER INTEGRAL 360 — versión 2026.10 (fecha de corte 15-oct-2026).
+ *
+ * Estado de verificación por requisito (campo `vigencia`):
+ *   'verificada'           Texto o vigencia consultados en compilación oficial o fuente confiable en la fecha de corte.
+ *   'pendiente_validacion' Citado con base en conocimiento profesional; cotejar con el texto oficial antes de concluir.
+ *   'sin_norma'            Recomendación profesional o buena práctica: no corresponde a una obligación legal.
+ * Naturaleza: 'legal' | 'contractual' | 'voluntaria' (norma técnica adoptada) | 'recomendacion'.
+ *
+ * Las preguntas, criterios y recomendaciones son redacción propia de Ser Integral. Las normas técnicas ISO se
+ * citan solo por número de cláusula; su texto está protegido y debe consultarse en el ejemplar adquirido.
+ */
+import { ITEMS_0312, GRUPO_ART3, GRUPO_ART9, ITEMS_ART7 } from './catalogo-sst-0312.js';
+
+export const VERSION_BASE = '2026.10';
+export const FECHA_CORTE = '2026-10-15';
+
+const HOY = FECHA_CORTE;
+const PESO_SEVERIDAD = { critica: 3, alta: 2, media: 1.5, baja: 1 };
+
+const F = {
+  r0312: { norma: 'Resolución 0312 de 2019', normaNumero: '0312/2019', fuente: 'Ministerio del Trabajo — compilación Supersalud', enlace: 'https://normograma.supersalud.gov.co/compilacion/docs/resolucion_mtra_0312_2019.htm', fechaExpedicion: '2019-02-13' },
+  r3461: { norma: 'Resolución 3461 de 2025', normaNumero: '3461/2025', fuente: 'Ministerio del Trabajo — compilación Colpensiones', enlace: 'https://normativa.colpensiones.gov.co/compilacion/docs/resolucion_mtra_3461_2025.htm', fechaExpedicion: '2025-09-01' },
+  r1843: { norma: 'Resolución 1843 de 2025', normaNumero: '1843/2025', fuente: 'Ministerio del Trabajo', enlace: 'https://normograma.supersalud.gov.co/compilacion/docs/resolucion_minproteccion_2346_2007.htm', fechaExpedicion: '2025' },
+  c027: { norma: 'Circular 027 de 2026', normaNumero: '027/2026', fuente: 'Ministerio del Trabajo — compilación MinTIC', enlace: 'https://normograma.mintic.gov.co/mintic/compilacion/docs/circular_mintra_0027_2026.htm', fechaExpedicion: '2026-02-26' },
+  l2466: { norma: 'Ley 2466 de 2025 (reforma laboral)', normaNumero: '2466/2025', fuente: 'Congreso de la República — compilación Colpensiones', enlace: 'https://normativa.colpensiones.gov.co/compilacion/docs/ley_2466_2025.htm', fechaExpedicion: '2025-06-25' },
+  cst: { norma: 'Código Sustantivo del Trabajo', normaNumero: 'Decretos 2663 y 3743 de 1950', fuente: 'Compilación Colpensiones', enlace: 'https://normativa.colpensiones.gov.co/colpens/docs/decreto_2663_1950_pr003.htm', fechaExpedicion: '1950-08-05' },
+  cco: { norma: 'Código de Comercio', normaNumero: 'Decreto 410 de 1971', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/codigo_comercio.html', fechaExpedicion: '1971-03-27' },
+  l1581: { norma: 'Ley 1581 de 2012', normaNumero: '1581/2012', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_1581_2012.html', fechaExpedicion: '2012-10-17' },
+  d1074: { norma: 'Decreto 1074 de 2015 (Único Reglamentario Sector Comercio)', normaNumero: '1074/2015', fuente: 'Función Pública', enlace: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=76608', fechaExpedicion: '2015-05-26' },
+  d090: { norma: 'Decreto 090 de 2018 (modifica el Decreto 1074 de 2015)', normaNumero: '090/2018', fuente: 'Compilación Secretaría de Salud de Bogotá', enlace: 'https://www.saludcapital.gov.co/Normo/tic/decreto_0090_de_2018.pdf', fechaExpedicion: '2018-01' },
+  l1480: { norma: 'Ley 1480 de 2011 (Estatuto del Consumidor)', normaNumero: '1480/2011', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_1480_2011.html', fechaExpedicion: '2011-10-12' },
+  l1755: { norma: 'Ley 1755 de 2015 (derecho de petición)', normaNumero: '1755/2015', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_1755_2015.html', fechaExpedicion: '2015-06-30' },
+  l527: { norma: 'Ley 527 de 1999 (mensajes de datos)', normaNumero: '527/1999', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_0527_1999.html', fechaExpedicion: '1999-08-18' },
+  l100: { norma: 'Ley 100 de 1993', normaNumero: '100/1993', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_0100_1993.html', fechaExpedicion: '1993-12-23' },
+  l1562: { norma: 'Ley 1562 de 2012', normaNumero: '1562/2012', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_1562_2012.html', fechaExpedicion: '2012-07-11' },
+  l2191: { norma: 'Ley 2191 de 2022 (desconexión laboral)', normaNumero: '2191/2022', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_2191_2022.html', fechaExpedicion: '2022-01-06' },
+  l789: { norma: 'Ley 789 de 2002', normaNumero: '789/2002', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/ley_0789_2002.html', fechaExpedicion: '2002-12-27' },
+  et: { norma: 'Estatuto Tributario', normaNumero: 'Decreto 624 de 1989', fuente: 'Secretaría del Senado', enlace: 'http://www.secretariasenado.gov.co/senado/basedoc/estatuto_tributario.html', fechaExpedicion: '1989-03-30' },
+  r2764: { norma: 'Resolución 2764 de 2022 (batería de riesgo psicosocial)', normaNumero: '2764/2022', fuente: 'Ministerio del Trabajo', enlace: '', fechaExpedicion: '2022' },
+  r4272: { norma: 'Resolución 4272 de 2021 (trabajo en alturas)', normaNumero: '4272/2021', fuente: 'Ministerio del Trabajo', enlace: '', fechaExpedicion: '2021' },
+  d1496: { norma: 'Decreto 1496 de 2018 y Resolución 773 de 2021 (Sistema Globalmente Armonizado)', normaNumero: '1496/2018 · 773/2021', fuente: 'Ministerio del Trabajo', enlace: '', fechaExpedicion: '2018' },
+  d2157: { norma: 'Ley 1523 de 2012, art. 42, y Decreto 2157 de 2017', normaNumero: '1523/2012 · 2157/2017', fuente: 'Presidencia de la República', enlace: '', fechaExpedicion: '2017-12-20' },
+  d1076: { norma: 'Decreto 1076 de 2015 (Único Reglamentario Sector Ambiente)', normaNumero: '1076/2015', fuente: 'Ministerio de Ambiente', enlace: 'https://www.funcionpublica.gov.co/eva/gestornormativo/norma.php?i=78153', fechaExpedicion: '2015-05-26' },
+  r2184: { norma: 'Resolución 2184 de 2019 (código de colores)', normaNumero: '2184/2019', fuente: 'Ministerio de Ambiente — compilación Cancillería', enlace: 'https://cancilleria.gov.co/normograma/compilacion/docs/resolucion_minambienteds_2184_2019.htm', fechaExpedicion: '2019-12-26' },
+  d1077: { norma: 'Decreto 1077 de 2015 (servicio público de aseo)', normaNumero: '1077/2015', fuente: 'Ministerio de Vivienda', enlace: '', fechaExpedicion: '2015-05-26' },
+  r631: { norma: 'Resolución 0631 de 2015 (parámetros de vertimientos)', normaNumero: '0631/2015', fuente: 'Ministerio de Ambiente', enlace: '', fechaExpedicion: '2015-03-17' },
+  r627: { norma: 'Resolución 0627 de 2006 (ruido ambiental)', normaNumero: '0627/2006', fuente: 'Ministerio de Ambiente', enlace: '', fechaExpedicion: '2006-04-07' },
+  l1124: { norma: 'Ley 1124 de 2007 y Decreto 1076 de 2015 (Departamento de Gestión Ambiental)', normaNumero: '1124/2007', fuente: 'Secretaría del Senado', enlace: '', fechaExpedicion: '2007-01-22' },
+  r1407: { norma: 'Resolución 1407 de 2018, modificada por la Resolución 1342 de 2020 (REP envases y empaques)', normaNumero: '1407/2018', fuente: 'Ministerio de Ambiente', enlace: '', fechaExpedicion: '2018-07-26' },
+  iso9001: { norma: 'ISO 9001:2026 — Sistemas de gestión de la calidad', normaNumero: 'ISO 9001:2026', fuente: 'Organización Internacional de Normalización (ISO)', enlace: 'https://www.iso.org/iso-9001-quality-management.html', fechaExpedicion: '2026-09' },
+  iso14001: { norma: 'ISO 14001:2015 — Sistemas de gestión ambiental', normaNumero: 'ISO 14001:2015', fuente: 'Organización Internacional de Normalización (ISO)', enlace: 'https://www.iso.org/iso-14001-environmental-management.html', fechaExpedicion: '2015-09' },
+  ninguna: { norma: '', normaNumero: '', fuente: '', enlace: '', fechaExpedicion: '' },
+};
+
+const NOTA_ISO = 'Norma voluntaria. ISO 9001:2026 entró en vigor el 16-sep-2026; la transición de certificados ISO 9001:2015 termina el 15-sep-2029. Numeración de cláusulas según la estructura armonizada: cotejar con el ejemplar adquirido.';
+
+function req(o) {
+  const fuente = F[o.f || 'ninguna'];
+  return {
+    codigo: o.codigo, campo: o.campo, categoria: o.categoria, subcategoria: o.subcategoria || '',
+    pregunta: o.pregunta, criterio: o.criterio || '', naturaleza: o.naturaleza || 'legal',
+    norma: o.norma ?? fuente.norma, normaNumero: o.normaNumero ?? fuente.normaNumero, disposicion: o.disposicion || '',
+    fuente: fuente.fuente, enlace: o.enlace ?? fuente.enlace, fechaExpedicion: fuente.fechaExpedicion,
+    normasRelacionadas: o.relacionadas || '',
+    vigencia: o.vigencia || 'pendiente_validacion', fechaRevision: HOY, notaVerificacion: o.nota || '',
+    aplicabilidad: o.aplica || {}, evidencia: o.evidencia || '', metodo: o.metodo || 'Revisión documental',
+    peso: o.peso ?? PESO_SEVERIDAD[o.severidad || 'media'], severidad: o.severidad || 'media',
+    recomendacion: o.recomendacion || '', responsable: o.responsable || 'Representante legal', periodicidad: o.periodicidad || '',
+    ref0312: o.ref0312 || null, estado: 'vigente',
+  };
+}
+
+/* ======================== SEGURIDAD Y SALUD EN EL TRABAJO ======================== */
+const sst0312 = ITEMS_0312.map(([item, nombre, valor, estandar, ciclo, pregunta, evidencia, severidad]) => {
+  const grupos = ['art16'];
+  if (GRUPO_ART9.includes(item)) grupos.push('art9');
+  if (GRUPO_ART3.includes(item)) grupos.push('art3');
+  return req({
+    codigo: `SST-${item}`, campo: 'sst', categoria: estandar, subcategoria: `${ciclo} · ítem ${item}`, f: 'r0312',
+    pregunta, criterio: `Ítem ${item} — ${nombre}. Criterio y modo de verificación literales: art. 16 de la resolución (y arts. 3 y 9 para los grupos de 7 y 21 estándares).`,
+    disposicion: `Arts. 3, 9 o 16 según el grupo; ítem ${item}; valor ${valor} en la tabla del art. 27`,
+    relacionadas: item === '3.1.4' ? 'Resolución 1843 de 2025 (evaluaciones médicas ocupacionales; derogó la Resolución 2346 de 2007, art. 36)' : item === '1.1.8' ? 'Resolución 3461 de 2025 (derogó las Resoluciones 652 y 1356 de 2012)' : item === '3.2.1' ? 'Resolución 156 de 2005 (formatos de reporte)' : 'Decreto 1072 de 2015, Libro 2, Parte 2, Título 4, Capítulo 6',
+    vigencia: 'verificada', nota: 'Vigencia de la resolución confirmada (aplicada por la Circular 027 de 2026). Valor del ítem cotejado con fuente secundaria; texto literal del art. 27 pendiente de cotejo.',
+    aplica: { grupos0312: grupos }, evidencia, metodo: 'Revisión documental y verificación en campo', peso: valor, severidad,
+    responsable: 'Responsable del SG-SST', periodicidad: 'Anual (autoevaluación en diciembre)', ref0312: item,
+    recomendacion: `Cerrar la brecha del ítem ${item} con evidencia verificable conforme al modo de verificación del art. 16.`,
+  });
+});
+
+const sstArt7 = ITEMS_ART7.map(([item, nombre, pregunta]) => req({
+  codigo: `SST-${item}`, campo: 'sst', categoria: 'Unidades de producción agropecuaria', subcategoria: 'Art. 7', f: 'r0312',
+  pregunta, criterio: `${nombre}. Ver texto literal del art. 7.`, disposicion: 'Art. 7', vigencia: 'verificada',
+  nota: 'Alcance del art. 7 confirmado en compilación oficial. La resolución no asigna valor numérico a estos estándares.',
+  aplica: { grupos0312: ['art7'] }, peso: 3, severidad: 'alta', responsable: 'Responsable del SG-SST', ref0312: item,
+}));
+
+const sstComplementarios = [
+  req({ codigo: 'SST-C01', campo: 'sst', categoria: 'Reporte de estándares mínimos', f: 'c027', vigencia: 'verificada', severidad: 'alta', disposicion: 'Instrucciones sobre registro anual',
+    pregunta: '¿Se registró la autoevaluación de Estándares Mínimos del año anterior y el plan de mejoramiento en el aplicativo del Fondo de Riesgos Laborales (sgrl.mintrabajo.gov.co) a más tardar el 31 de julio de 2026, con copia a la ARL?',
+    criterio: 'Registro de la autoevaluación (formulario del art. 27 de la Res. 0312) y plan de mejoramiento; envío a la ARL; reporte de avance en julio.',
+    evidencia: 'Constancia de registro en el aplicativo y radicado ante la ARL', responsable: 'Responsable del SG-SST', periodicidad: 'Anual',
+    recomendacion: 'Si no se registró, hacerlo de inmediato y documentar la causa del retraso; la ARL debe reportar a las empresas incumplidas.' }),
+  req({ codigo: 'SST-C02', campo: 'sst', categoria: 'Riesgo psicosocial', f: 'r2764', severidad: 'alta', disposicion: 'Aplicación de la batería y periodicidad',
+    pregunta: '¿Se aplicó la batería de instrumentos de evaluación de factores de riesgo psicosocial con la periodicidad que corresponde al nivel de riesgo?',
+    evidencia: 'Informe de aplicación de la batería por psicólogo con licencia en SST y programa de vigilancia', responsable: 'Responsable del SG-SST', periodicidad: 'Anual o bienal según nivel de riesgo' }),
+  req({ codigo: 'SST-C03', campo: 'sst', categoria: 'Trabajo en alturas', f: 'r4272', severidad: 'critica', disposicion: 'Programa de prevención y protección contra caídas',
+    aplica: { condiciones: ['trabajoAlturas'] },
+    pregunta: '¿Existe programa de prevención y protección contra caídas, coordinador de alturas y certificación vigente del personal que trabaja en alturas?',
+    evidencia: 'Programa, permisos de trabajo, certificados de formación vigentes, inspección de equipos', responsable: 'Coordinador de trabajo en alturas' }),
+  req({ codigo: 'SST-C04', campo: 'sst', categoria: 'Sustancias químicas', f: 'd1496', severidad: 'alta', disposicion: 'Clasificación, etiquetado y fichas de datos de seguridad',
+    aplica: { condiciones: ['sustanciasQuimicas'] },
+    pregunta: '¿Las sustancias químicas están clasificadas y etiquetadas según el SGA y se dispone de fichas de datos de seguridad en español?',
+    evidencia: 'Inventario de químicos, etiquetas SGA, fichas de datos de seguridad, matriz de compatibilidad', responsable: 'Responsable del SG-SST' }),
+  req({ codigo: 'SST-C05', campo: 'sst', categoria: 'Gestión del riesgo de desastres', f: 'd2157', severidad: 'alta', disposicion: 'Plan de Gestión del Riesgo de Desastres de Entidades Públicas y Privadas (PGRDEPP)',
+    aplica: { condiciones: ['riesgoDesastre'] },
+    pregunta: '¿La empresa cuenta con el PGRDEPP, articulado con el plan de emergencias y con el consejo municipal de gestión del riesgo?',
+    evidencia: 'PGRDEPP aprobado, análisis de riesgo con escenarios externos, comunicación al CMGRD', responsable: 'Representante legal' }),
+  req({ codigo: 'SST-C06', campo: 'sst', categoria: 'Reglamento de higiene y seguridad industrial', f: 'cst', severidad: 'media', disposicion: 'Art. 349',
+    aplica: { minTrabajadores: 10 },
+    pregunta: '¿La empresa con 10 o más trabajadores permanentes tiene reglamento de higiene y seguridad industrial actualizado y publicado?',
+    evidencia: 'Reglamento firmado y publicado en dos lugares visibles', responsable: 'Responsable del SG-SST' }),
+];
+
+/* ============================ JURÍDICO EMPRESARIAL ============================ */
+const juridico = [
+  req({ codigo: 'JUR-01', campo: 'juridico', categoria: 'Existencia y representación legal', f: 'cco', disposicion: 'Arts. 19 y 26 a 28', severidad: 'alta',
+    aplica: { condiciones: ['sociedadComercial'] },
+    pregunta: '¿La empresa cuenta con matrícula mercantil y certificado de existencia y representación legal que refleje su situación actual (representante, objeto, domicilio)?',
+    evidencia: 'Certificado de existencia y representación legal con expedición reciente', recomendacion: 'Inscribir las reformas y nombramientos pendientes en la cámara de comercio.' }),
+  req({ codigo: 'JUR-02', campo: 'juridico', categoria: 'Registro mercantil y renovaciones', f: 'cco', disposicion: 'Art. 33', severidad: 'alta', periodicidad: 'Anual (primer trimestre)',
+    aplica: { condiciones: ['sociedadComercial'] },
+    pregunta: '¿La matrícula mercantil se renovó dentro de los tres primeros meses del año en curso?',
+    evidencia: 'Certificado o recibo de renovación del año', recomendacion: 'Renovar la matrícula y programar la alerta anual de renovación.' }),
+  req({ codigo: 'JUR-03', campo: 'juridico', categoria: 'Obligaciones societarias', f: 'cco', disposicion: 'Art. 422; Ley 1258 de 2008, art. 45 (remisión para S.A.S.)', severidad: 'media', periodicidad: 'Anual',
+    aplica: { condiciones: ['sociedadComercial'] }, responsable: 'Representante legal y revisor fiscal si existe',
+    pregunta: '¿El máximo órgano social se reunió en sesión ordinaria dentro de los tres meses siguientes al cierre del ejercicio y aprobó estados financieros?',
+    evidencia: 'Acta de asamblea o de accionista único con aprobación de estados financieros' }),
+  req({ codigo: 'JUR-04', campo: 'juridico', categoria: 'Obligaciones societarias', f: 'cco', disposicion: 'Art. 19, num. 3, y art. 60', severidad: 'media',
+    aplica: { condiciones: ['sociedadComercial'] }, responsable: 'Contador',
+    pregunta: '¿Se llevan libros de comercio y contabilidad conforme a la ley y se conservan los papeles del comerciante por el tiempo exigido?',
+    evidencia: 'Libros registrados o electrónicos, política de conservación documental' }),
+  req({ codigo: 'JUR-05', campo: 'juridico', categoria: 'Obligaciones tributarias', f: 'et', disposicion: 'Art. 555-2 (Registro Único Tributario)', severidad: 'media', responsable: 'Contador',
+    pregunta: '¿El RUT está actualizado con las actividades económicas (CIIU), responsabilidades y datos de contacto vigentes?',
+    criterio: 'Revisión dentro del alcance contratado; no sustituye la revisión tributaria integral.',
+    evidencia: 'RUT con fecha de actualización reciente' }),
+  req({ codigo: 'JUR-06', campo: 'juridico', categoria: 'Contratación laboral', f: 'l2466', disposicion: 'Arts. 5 y 6 (modifican arts. 46 y 47 del CST)', vigencia: 'verificada', severidad: 'alta',
+    aplica: { minTrabajadores: 1 }, responsable: 'Gestión humana',
+    pregunta: '¿Los contratos a término fijo y por obra o labor constan por escrito, el término fijo no excede cuatro años y el término indefinido se usa como regla general?',
+    criterio: 'Si el contrato a término fijo o por obra no consta por escrito o excede las condiciones, se entiende celebrado a término indefinido.',
+    evidencia: 'Muestra de contratos firmados por modalidad', recomendacion: 'Revisar la muestra de contratos y ajustar modelos a la Ley 2466 de 2025.' }),
+  req({ codigo: 'JUR-07', campo: 'juridico', categoria: 'Reglamento interno de trabajo', f: 'cst', disposicion: 'Art. 105 (art. 106 de la numeración original del Decreto 2663 de 1950)', vigencia: 'verificada', severidad: 'alta',
+    nota: 'Umbrales confirmados en el texto compilado: más de 5 trabajadores permanentes (comerciales), más de 10 (industriales y mixtas), más de 20 (agrícolas, ganaderas o forestales).',
+    aplica: { minTrabajadores: 6 }, responsable: 'Gestión humana',
+    pregunta: '¿La empresa, según su número de trabajadores permanentes y tipo de actividad, tiene reglamento interno de trabajo adoptado y publicado?',
+    evidencia: 'Reglamento interno vigente y constancia de publicación' }),
+  req({ codigo: 'JUR-08', campo: 'juridico', categoria: 'Reglamento interno de trabajo', f: 'l2466', disposicion: 'Art. 7, parágrafo 4 (modifica el art. 115 del CST)', vigencia: 'verificada', severidad: 'critica',
+    aplica: { minTrabajadores: 6 }, responsable: 'Gestión humana',
+    pregunta: '¿El reglamento interno se actualizó con el debido proceso disciplinario de la Ley 2466 de 2025 dentro de los 12 meses siguientes a su vigencia (plazo vencido el 25 de junio de 2026)?',
+    criterio: 'Comunicación escrita de apertura, formulación de cargos, acceso a pruebas, término mínimo de 5 días para descargos, decisión motivada y derecho a impugnar. Empresas con menos de 10 trabajadores: escuchar previamente al trabajador.',
+    evidencia: 'Reglamento actualizado, fecha de publicación y procedimiento disciplinario', recomendacion: 'Actualizar el reglamento de inmediato: el plazo legal ya venció.' }),
+  req({ codigo: 'JUR-09', campo: 'juridico', categoria: 'Jornada y recargos', f: 'l2466', disposicion: 'Arts. 10, 11, 13 y 14', vigencia: 'verificada', severidad: 'alta',
+    nota: 'Jornada máxima de 42 horas semanales y horario nocturno desde las 7:00 p. m. confirmados en la Ley 2466 de 2025. Gradualidad del recargo dominical: 90 % desde el 1-jul-2026 y 100 % desde el 1-jul-2027. La gradualidad de la Ley 2101 de 2021 queda pendiente de cotejo.',
+    relacionadas: 'Ley 2101 de 2021 (reducción gradual de la jornada)', aplica: { minTrabajadores: 1 }, responsable: 'Gestión humana y nómina',
+    pregunta: '¿La programación de turnos y la nómina respetan la jornada máxima de 42 horas semanales, el límite de horas extra (2 diarias y 12 semanales), el horario nocturno desde las 7:00 p. m. y el recargo dominical y festivo vigente (90 % desde el 1 de julio de 2026)?',
+    evidencia: 'Cuadros de turnos, registro de jornada y liquidaciones de nómina de los últimos tres meses' }),
+  req({ codigo: 'JUR-10', campo: 'juridico', categoria: 'Seguridad social', f: 'l100', disposicion: 'Arts. 15, 17, 22 y 157; Ley 1562 de 2012, art. 2', severidad: 'critica',
+    relacionadas: 'Ley 1562 de 2012', aplica: { minTrabajadores: 1 }, responsable: 'Nómina',
+    pregunta: '¿Todos los trabajadores están afiliados a salud, pensión, riesgos laborales y caja de compensación desde el inicio del vínculo, con aportes pagados oportunamente sobre el ingreso base correcto?',
+    evidencia: 'Planillas PILA de los últimos tres meses cruzadas con la nómina' }),
+  req({ codigo: 'JUR-11', campo: 'juridico', categoria: 'Modalidades de vinculación y contratistas', f: 'l1562', disposicion: 'Art. 2', severidad: 'alta',
+    aplica: { minContratistas: 1 }, responsable: 'Área de compras o contratación',
+    pregunta: '¿Se verifica la afiliación y el pago de aportes a seguridad social de los contratistas independientes y la ausencia de elementos de subordinación en sus contratos?',
+    evidencia: 'Contratos de prestación de servicios, planillas de aportes, informes de actividades' }),
+  req({ codigo: 'JUR-12', campo: 'juridico', categoria: 'Contratación laboral', f: 'l789', disposicion: 'Arts. 32 a 34; Ley 2466 de 2025, arts. 21 a 23', severidad: 'media',
+    nota: 'Las reglas del contrato de aprendizaje de la Ley 2466 de 2025 (sostenimiento de 75 % y 100 % del SMLMV; monetización de 1,5 SMLMV por aprendiz) están confirmadas; el umbral de 15 trabajadores queda pendiente de cotejo.',
+    aplica: { minTrabajadores: 15 }, responsable: 'Gestión humana',
+    pregunta: '¿La empresa cumple la cuota de aprendices regulada por el SENA o la monetiza, aplicando las reglas del contrato de aprendizaje de la Ley 2466 de 2025?',
+    evidencia: 'Resolución de cuota del SENA, contratos de aprendizaje o pagos de monetización' }),
+  req({ codigo: 'JUR-13', campo: 'juridico', categoria: 'Acoso y violencia en el trabajo', f: 'l2466', disposicion: 'Art. 18; Leyes 1010 de 2006, 1257 de 2008 y 2365 de 2024', vigencia: 'verificada', severidad: 'alta',
+    aplica: { minTrabajadores: 1 }, responsable: 'Gestión humana y Comité de Convivencia',
+    pregunta: '¿La empresa adoptó protocolos de prevención y atención del acoso laboral y del acoso sexual, que cubran también a aspirantes, pasantes y aprendices?',
+    evidencia: 'Protocolo aprobado, canales de denuncia, registros de divulgación y capacitación' }),
+  req({ codigo: 'JUR-14', campo: 'juridico', categoria: 'Contratación laboral', f: 'l2191', disposicion: 'Política de desconexión laboral', severidad: 'media',
+    aplica: { minTrabajadores: 1 }, responsable: 'Gestión humana',
+    pregunta: '¿Existe y se divulgó una política de desconexión laboral que garantice el derecho a no ser contactado fuera de la jornada?',
+    evidencia: 'Política aprobada y constancia de divulgación' }),
+  req({ codigo: 'JUR-15', campo: 'juridico', categoria: 'Protección de datos personales', f: 'd1074', disposicion: 'Art. 2.2.2.25.3.1 (compila el Decreto 1377 de 2013); Ley 1581 de 2012, arts. 17 y 18', severidad: 'alta',
+    relacionadas: 'Ley 1581 de 2012', responsable: 'Oficial de protección de datos o representante legal',
+    pregunta: '¿La empresa adoptó y publicó una política de tratamiento de datos personales con el contenido mínimo exigido?',
+    evidencia: 'Política publicada (sitio web, carteleras) y fecha de aprobación' }),
+  req({ codigo: 'JUR-16', campo: 'juridico', categoria: 'Protección de datos personales', f: 'l1581', disposicion: 'Art. 9', severidad: 'alta',
+    pregunta: '¿Se obtiene autorización previa, expresa e informada de los titulares (trabajadores, clientes, proveedores) y se conserva prueba de ella?',
+    evidencia: 'Formatos de autorización firmados o registros electrónicos de consentimiento' }),
+  req({ codigo: 'JUR-17', campo: 'juridico', categoria: 'Protección de datos personales', f: 'd090', disposicion: 'Decreto 1074 de 2015, art. 2.2.2.26.1.2 (modificado por el Decreto 090 de 2018, art. 1)', vigencia: 'verificada', severidad: 'media', periodicidad: 'Actualización anual',
+    aplica: { algunaCondicion: ['activosMayor100kUVT', 'entidadPublica'] },
+    pregunta: '¿Las bases de datos con información personal están inscritas y actualizadas en el Registro Nacional de Bases de Datos de la SIC?',
+    criterio: 'Obligadas: sociedades y entidades sin ánimo de lucro con activos totales superiores a 100.000 UVT, y personas jurídicas de naturaleza pública.',
+    evidencia: 'Constancias de inscripción y actualización en el RNBD' }),
+  req({ codigo: 'JUR-18', campo: 'juridico', categoria: 'Protección de datos personales', f: 'l1581', disposicion: 'Arts. 14 y 15', severidad: 'media',
+    pregunta: '¿Existe un procedimiento para atender consultas (10 días hábiles) y reclamos (15 días hábiles) de los titulares, con responsable designado?',
+    evidencia: 'Procedimiento, canal habilitado y registro de solicitudes' }),
+  req({ codigo: 'JUR-19', campo: 'juridico', categoria: 'Protección al consumidor', f: 'l1480', disposicion: 'Arts. 7 (garantía legal) y 23 (información)', severidad: 'media',
+    aplica: { condiciones: ['vendeConsumidorFinal'] }, responsable: 'Área comercial',
+    pregunta: '¿La empresa informa con veracidad sobre sus productos o servicios, atiende la garantía legal y conserva los registros de PQR de consumidores?',
+    evidencia: 'Políticas de garantía, información al consumidor, registro de PQR' }),
+  req({ codigo: 'JUR-20', campo: 'juridico', categoria: 'Derechos de petición y requerimientos', f: 'l1755', disposicion: 'Art. 32 (peticiones ante organizaciones privadas)', severidad: 'media',
+    pregunta: '¿La empresa tiene un procedimiento para recibir, radicar y responder dentro de los términos legales las peticiones y los requerimientos de autoridades?',
+    evidencia: 'Procedimiento, radicador con fechas de entrada y respuesta' }),
+  req({ codigo: 'JUR-21', campo: 'juridico', categoria: 'Documentación y gestión contractual', f: 'l527', disposicion: 'Arts. 5 a 7 y 28 (validez de mensajes de datos y firmas)', naturaleza: 'recomendacion', severidad: 'baja',
+    aplica: { condiciones: ['contrataElectronicamente'] }, responsable: 'Área jurídica',
+    pregunta: '¿Los contratos y documentos firmados por medios electrónicos usan mecanismos que permitan acreditar autenticidad, integridad y conservación?',
+    evidencia: 'Plataforma de firma, certificados o registros de trazabilidad' }),
+  req({ codigo: 'JUR-22', campo: 'juridico', categoria: 'Documentación y gestión contractual', naturaleza: 'recomendacion', vigencia: 'sin_norma', severidad: 'media', responsable: 'Área jurídica',
+    pregunta: '¿Los contratos con clientes, proveedores y aliados constan por escrito, están vigentes, centralizados y con seguimiento a fechas y obligaciones clave?',
+    evidencia: 'Inventario contractual con fechas de vencimiento y responsables' }),
+  req({ codigo: 'JUR-23', campo: 'juridico', categoria: 'Gestión de procesos judiciales y administrativos', naturaleza: 'recomendacion', vigencia: 'sin_norma', severidad: 'media', responsable: 'Área jurídica',
+    pregunta: '¿Existe un inventario actualizado de procesos judiciales, administrativos y sancionatorios con estado, apoderado, contingencia estimada y próximas actuaciones?',
+    evidencia: 'Matriz de procesos con fecha de corte' }),
+  req({ codigo: 'JUR-24', campo: 'juridico', categoria: 'Seguros y responsabilidades', naturaleza: 'contractual', vigencia: 'sin_norma', severidad: 'baja', responsable: 'Representante legal',
+    pregunta: '¿La empresa tiene las pólizas exigidas por sus contratos y las que recomienda su exposición (responsabilidad civil extracontractual, cumplimiento, todo riesgo)?',
+    evidencia: 'Pólizas vigentes y cuadro de exigencias contractuales' }),
+];
+
+/* ========================== CALIDAD Y GESTIÓN DE PROCESOS ========================== */
+const C = (codigo, clausula, categoria, pregunta, evidencia, severidad = 'media') => req({
+  codigo, campo: 'calidad', categoria, f: 'iso9001', naturaleza: 'voluntaria', vigencia: 'verificada', nota: NOTA_ISO,
+  disposicion: `Cláusula ${clausula}`, pregunta, evidencia, severidad, responsable: 'Líder del sistema de gestión de calidad', metodo: 'Revisión documental, entrevista y muestreo de registros',
+});
+const calidad = [
+  C('CAL-01', '4.1', 'Contexto de la organización', '¿La organización determinó las cuestiones externas e internas pertinentes, incluido el cambio climático, y las revisa?', 'Análisis de contexto actualizado'),
+  C('CAL-02', '4.2', 'Partes interesadas', '¿Se identificaron las partes interesadas pertinentes y sus requisitos?', 'Matriz de partes interesadas'),
+  C('CAL-03', '4.3', 'Contexto de la organización', '¿El alcance del sistema de gestión está definido y documentado?', 'Documento de alcance'),
+  C('CAL-04', '4.4', 'Identificación y caracterización de procesos', '¿Existe mapa de procesos y cada proceso está caracterizado (entradas, salidas, responsables, indicadores, riesgos)?', 'Mapa de procesos y caracterizaciones', 'alta'),
+  C('CAL-05', '5.1', 'Liderazgo y responsabilidades', '¿La alta dirección demuestra liderazgo y compromiso, y promueve una cultura de calidad?', 'Actas de dirección, asignación de recursos'),
+  C('CAL-06', '5.2', 'Política y objetivos de calidad', '¿La política de calidad está aprobada, comunicada y es coherente con la dirección estratégica?', 'Política firmada y divulgada'),
+  C('CAL-07', '5.3', 'Liderazgo y responsabilidades', '¿Los roles, responsabilidades y autoridades están asignados y comunicados?', 'Manual de funciones, organigrama'),
+  C('CAL-08', '6.1', 'Gestión de riesgos y oportunidades', '¿Se identifican y tratan los riesgos y las oportunidades de los procesos?', 'Matriz de riesgos y oportunidades con acciones', 'alta'),
+  C('CAL-09', '6.2', 'Política y objetivos de calidad', '¿Los objetivos de calidad son medibles, tienen plan para lograrlos y seguimiento?', 'Objetivos con metas e indicadores'),
+  C('CAL-10', '6.3', 'Control de cambios', '¿Los cambios en el sistema se planifican de forma controlada?', 'Registros de gestión del cambio'),
+  C('CAL-11', '7.1.6', 'Gestión del conocimiento', '¿Se determina, conserva y pone a disposición el conocimiento necesario para operar los procesos?', 'Repositorio de conocimiento, lecciones aprendidas', 'baja'),
+  C('CAL-12', '7.2', 'Competencia', '¿Se define la competencia requerida por cargo y se conservan evidencias de formación y evaluación?', 'Perfiles de cargo, registros de formación'),
+  C('CAL-13', '7.5', 'Control de documentos y registros', '¿Existe control de documentos (aprobación, versión, distribución) y de registros (conservación, protección)?', 'Listado maestro de documentos y registros', 'alta'),
+  C('CAL-14', '8.2', 'Cumplimiento de requisitos del cliente', '¿Se determinan y revisan los requisitos del cliente antes de comprometerse a suministrar?', 'Registros de revisión de requisitos y contratos'),
+  C('CAL-15', '8.4', 'Gestión de proveedores', '¿Se seleccionan, evalúan y reevalúan los proveedores externos con criterios definidos?', 'Procedimiento y evaluaciones de proveedores'),
+  C('CAL-16', '8.5.2', 'Trazabilidad', '¿Se identifican las salidas y se conserva su trazabilidad cuando es un requisito?', 'Registros de trazabilidad', 'baja'),
+  C('CAL-17', '8.6', 'Evaluación de productos y servicios', '¿Se verifica que los productos y servicios cumplen los requisitos antes de su liberación?', 'Registros de inspección o liberación'),
+  C('CAL-18', '8.7', 'Control de salidas no conformes', '¿Las salidas no conformes se identifican, controlan y registran?', 'Registro de producto o servicio no conforme'),
+  C('CAL-19', '9.1.2', 'Satisfacción del cliente', '¿Se mide la satisfacción del cliente y se analizan sus resultados?', 'Encuestas e informe de satisfacción'),
+  C('CAL-20', '9.1.2 y 8.2.1', 'Tratamiento de quejas y reclamos', '¿Existe un mecanismo para recibir, tratar y analizar quejas y reclamos?', 'Registro de PQR con tiempos de respuesta'),
+  C('CAL-21', '9.1.3', 'Indicadores de desempeño', '¿Se analizan los datos e indicadores de los procesos para evaluar el desempeño?', 'Tablero de indicadores con análisis'),
+  C('CAL-22', '9.2', 'Auditorías internas', '¿Se ejecuta un programa de auditorías internas con auditores competentes e independientes?', 'Programa, planes e informes de auditoría'),
+  C('CAL-23', '9.3', 'Evaluación de desempeño', '¿La alta dirección revisa el sistema a intervalos planificados con las entradas requeridas?', 'Acta de revisión por la dirección'),
+  C('CAL-24', '10.2', 'Acciones correctivas', '¿Las no conformidades se analizan en su causa y se verifica la eficacia de las acciones correctivas?', 'Registro de acciones correctivas', 'alta'),
+  C('CAL-25', '10.3', 'Mejora continua', '¿Se identifican y gestionan oportunidades de mejora?', 'Plan o registro de mejoras', 'baja'),
+];
+
+/* ================================== AMBIENTAL ================================== */
+const ambiental = [
+  req({ codigo: 'AMB-01', campo: 'ambiental', categoria: 'Aspectos e impactos ambientales', f: 'iso14001', naturaleza: 'voluntaria', vigencia: 'verificada', disposicion: 'Cláusula 6.1.2', severidad: 'media', responsable: 'Responsable ambiental',
+    pregunta: '¿La empresa identificó sus aspectos e impactos ambientales y determinó los significativos?', evidencia: 'Matriz de aspectos e impactos' }),
+  req({ codigo: 'AMB-02', campo: 'ambiental', categoria: 'Identificación de obligaciones ambientales', f: 'iso14001', naturaleza: 'voluntaria', vigencia: 'verificada', disposicion: 'Cláusula 6.1.3', severidad: 'alta', responsable: 'Responsable ambiental',
+    pregunta: '¿Existe una matriz de requisitos legales ambientales aplicables, actualizada y con evaluación de cumplimiento?', evidencia: 'Matriz legal ambiental con fecha de actualización' }),
+  req({ codigo: 'AMB-03', campo: 'ambiental', categoria: 'Separación en la fuente', f: 'r2184', disposicion: 'Art. 4 (verde: orgánicos aprovechables; blanco: aprovechables; negro: no aprovechables)', vigencia: 'verificada', severidad: 'media',
+    nota: 'Obligatorio desde el 1-ene-2021 en el marco de los programas de aprovechamiento del servicio público de aseo de cada municipio.', responsable: 'Responsable ambiental',
+    pregunta: '¿Los residuos se separan en la fuente con el código de colores blanco, negro y verde?', evidencia: 'Puntos ecológicos rotulados, registro fotográfico, capacitación' }),
+  req({ codigo: 'AMB-04', campo: 'ambiental', categoria: 'Gestión de residuos ordinarios', f: 'd1077', disposicion: 'Título del servicio público de aseo', severidad: 'baja', responsable: 'Responsable ambiental',
+    pregunta: '¿Los residuos ordinarios se entregan al prestador del servicio de aseo y los aprovechables a recicladores u organizaciones autorizadas?', evidencia: 'Facturas del servicio de aseo, certificados de aprovechamiento' }),
+  req({ codigo: 'AMB-05', campo: 'ambiental', categoria: 'Gestión de residuos peligrosos', f: 'd1076', disposicion: 'Libro 2, Parte 2, Título 6 (obligaciones del generador)', severidad: 'critica',
+    nota: 'Contenido de las obligaciones del generador confirmado en fuente secundaria; número exacto del artículo pendiente de cotejo.',
+    aplica: { condiciones: ['generaRespel'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿La empresa identificó la peligrosidad de sus RESPEL y cuenta con un plan de gestión integral orientado a prevenir y minimizar su generación?', evidencia: 'Plan de gestión integral de RESPEL, caracterización de residuos' }),
+  req({ codigo: 'AMB-06', campo: 'ambiental', categoria: 'Gestión de residuos peligrosos', f: 'd1076', disposicion: 'Libro 2, Parte 2, Título 6 (obligaciones del generador)', severidad: 'alta',
+    aplica: { condiciones: ['generaRespel'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿Los RESPEL se envasan y etiquetan correctamente, se almacenan temporalmente en condiciones seguras, se entregan con hojas de seguridad y el personal está capacitado?', evidencia: 'Área de almacenamiento, etiquetas, hojas de seguridad, registros de capacitación' }),
+  req({ codigo: 'AMB-07', campo: 'ambiental', categoria: 'Entrega a gestores autorizados', f: 'd1076', disposicion: 'Libro 2, Parte 2, Título 6', severidad: 'alta',
+    aplica: { condiciones: ['generaRespel'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿Los RESPEL se entregan a transportadores y gestores autorizados, y se conservan los certificados de tratamiento o disposición final (hasta cinco años)?', evidencia: 'Licencias de los gestores, manifiestos y certificados de disposición' }),
+  req({ codigo: 'AMB-08', campo: 'ambiental', categoria: 'Gestión de residuos peligrosos', f: 'd1076', disposicion: 'Libro 2, Parte 2, Título 6 (Registro de Generadores)', severidad: 'alta', periodicidad: 'Actualización anual',
+    nota: 'Exención por debajo de 10 kg/mes y actualización anual confirmadas en fuente secundaria; número exacto del artículo pendiente de cotejo.',
+    aplica: { condiciones: ['respel10kg'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿La empresa está inscrita en el Registro de Generadores de RESPEL ante la autoridad ambiental y actualiza anualmente la información?', evidencia: 'Constancia de inscripción y de la última actualización anual' }),
+  req({ codigo: 'AMB-09', campo: 'ambiental', categoria: 'Vertimientos', f: 'd1076', disposicion: 'Art. 2.2.3.3.5.1 (permiso de vertimientos)', severidad: 'critica',
+    aplica: { condiciones: ['vierteCuerpoAguaSuelo'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿La empresa cuenta con permiso de vertimientos vigente otorgado por la autoridad ambiental y cumple sus obligaciones de seguimiento?', evidencia: 'Resolución del permiso, caracterizaciones, informes de cumplimiento' }),
+  req({ codigo: 'AMB-10', campo: 'ambiental', categoria: 'Vertimientos', f: 'r631', disposicion: 'Parámetros y valores límite para vertimientos al alcantarillado', severidad: 'alta',
+    aplica: { condiciones: ['vierteAlcantarillado'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿Las aguas residuales no domésticas vertidas al alcantarillado cumplen los valores límite y se caracterizan con la periodicidad exigida por el prestador o la autoridad?', evidencia: 'Caracterizaciones de laboratorio acreditado, comunicaciones del prestador' }),
+  req({ codigo: 'AMB-11', campo: 'ambiental', categoria: 'Consumo de recursos naturales', f: 'd1076', disposicion: 'Concesión de aguas (Libro 2, Parte 2, Título 3)', severidad: 'critica',
+    aplica: { condiciones: ['captaAgua'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿La captación de agua cuenta con concesión vigente y se reportan los consumos y la tasa por uso?', evidencia: 'Resolución de concesión y registros de consumo' }),
+  req({ codigo: 'AMB-12', campo: 'ambiental', categoria: 'Emisiones atmosféricas', f: 'd1076', disposicion: 'Art. 2.2.5.1.7.2 (casos que requieren permiso) y Resolución 619 de 1997', severidad: 'alta',
+    aplica: { condiciones: ['emisionesFuentesFijas'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿Se determinó si las fuentes fijas requieren permiso de emisión y, cuando aplica, se cuenta con él y con los estudios de emisiones?', evidencia: 'Permiso o concepto de no requerimiento, estudios isocinéticos' }),
+  req({ codigo: 'AMB-13', campo: 'ambiental', categoria: 'Ruido ambiental', f: 'r627', disposicion: 'Estándares máximos de emisión de ruido', severidad: 'media',
+    aplica: { condiciones: ['ruidoExterior'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿La emisión de ruido hacia el exterior cumple los estándares para el sector donde se ubica la empresa?', evidencia: 'Estudio de emisión de ruido' }),
+  req({ codigo: 'AMB-14', campo: 'ambiental', categoria: 'Licencias, permisos y autorizaciones', f: 'd1076', disposicion: 'Arts. 2.2.2.3.2.2 y 2.2.2.3.2.3 (competencias para licencia ambiental)', severidad: 'critica',
+    aplica: { condiciones: ['requiereLicenciaAmbiental'] }, responsable: 'Representante legal',
+    pregunta: '¿El proyecto, obra o actividad listado cuenta con licencia ambiental vigente y se cumplen sus obligaciones e informes de cumplimiento ambiental?', evidencia: 'Resolución de licencia e informes de cumplimiento ambiental (ICA)' }),
+  req({ codigo: 'AMB-15', campo: 'ambiental', categoria: 'Obligaciones sectoriales y territoriales', f: 'l1124', disposicion: 'Decreto 1076 de 2015, Libro 2, Parte 2, Título 8 (Departamento de Gestión Ambiental)', severidad: 'media',
+    aplica: { condiciones: ['actividadIndustrial'] }, responsable: 'Representante legal',
+    pregunta: '¿La empresa industrial conformó el Departamento de Gestión Ambiental y lo informó a la autoridad ambiental?', evidencia: 'Acto de creación del DGA y comunicación a la autoridad' }),
+  req({ codigo: 'AMB-16', campo: 'ambiental', categoria: 'Contingencias ambientales y derrames', f: 'd1076', disposicion: 'Plan de contingencia para el manejo de derrames (art. 2.2.3.3.4.14, modificado por el Decreto 050 de 2018)', severidad: 'alta',
+    aplica: { condiciones: ['sustanciasQuimicas'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿Existe plan de contingencia para derrames de hidrocarburos o sustancias nocivas, con kit antiderrames y simulacros?', evidencia: 'Plan de contingencia, inventario de kit, registro de simulacro' }),
+  req({ codigo: 'AMB-17', campo: 'ambiental', categoria: 'Responsabilidad extendida del productor', f: 'r1407', disposicion: 'Plan de gestión ambiental de residuos de envases y empaques', severidad: 'media',
+    aplica: { condiciones: ['productorEnvases'] }, responsable: 'Responsable ambiental',
+    pregunta: '¿La empresa, como productora de envases y empaques, formuló e implementa su plan de gestión de REP y reporta las metas de aprovechamiento?', evidencia: 'Plan REP aprobado e informes de avance' }),
+  req({ codigo: 'AMB-18', campo: 'ambiental', categoria: 'Uso eficiente del agua y la energía', naturaleza: 'recomendacion', vigencia: 'sin_norma', severidad: 'baja', responsable: 'Responsable ambiental',
+    pregunta: '¿La empresa mide sus consumos de agua y energía y tiene metas y acciones de ahorro?', evidencia: 'Registro de consumos e indicadores' }),
+  req({ codigo: 'AMB-19', campo: 'ambiental', categoria: 'Capacitación ambiental', naturaleza: 'recomendacion', vigencia: 'sin_norma', severidad: 'baja', responsable: 'Responsable ambiental',
+    pregunta: '¿El personal recibe capacitación ambiental acorde con los aspectos de su labor?', evidencia: 'Programa y registros de capacitación' }),
+  req({ codigo: 'AMB-20', campo: 'ambiental', categoria: 'Indicadores y seguimiento de objetivos', f: 'iso14001', naturaleza: 'voluntaria', vigencia: 'verificada', disposicion: 'Cláusulas 6.2 y 9.1', severidad: 'baja', responsable: 'Responsable ambiental',
+    pregunta: '¿Existen objetivos ambientales con indicadores y seguimiento periódico?', evidencia: 'Objetivos, fichas de indicadores y resultados' }),
+  req({ codigo: 'AMB-21', campo: 'ambiental', categoria: 'Auditoría y acciones correctivas', f: 'iso14001', naturaleza: 'voluntaria', vigencia: 'verificada', disposicion: 'Cláusulas 9.2 y 10.2', severidad: 'baja', responsable: 'Responsable ambiental',
+    pregunta: '¿Se audita el desempeño ambiental y se cierran las no conformidades con acciones correctivas eficaces?', evidencia: 'Informes de auditoría y registro de acciones' }),
+];
+
+export const REQUISITOS_BASE = [...juridico, ...sst0312, ...sstArt7, ...sstComplementarios, ...calidad, ...ambiental];
+
+export const CAMPOS = {
+  juridico: { nombre: 'Jurídico', largo: 'Jurídico y cumplimiento legal empresarial', sigla: 'JUR' },
+  sst: { nombre: 'SST', largo: 'Seguridad y Salud en el Trabajo', sigla: 'SST' },
+  calidad: { nombre: 'Calidad', largo: 'Calidad y gestión de procesos', sigla: 'CAL' },
+  ambiental: { nombre: 'Ambiental', largo: 'Medio ambiente', sigla: 'AMB' },
+};

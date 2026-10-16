@@ -1,0 +1,2 @@
+# El código del servidor nunca se sirve por web.
+Require all denied

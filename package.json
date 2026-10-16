@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "name": "ser-integral-360",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests/run-tests.mjs && node tests/motor.test.mjs && node tests/planes.test.mjs && node tests/pdf.test.mjs && node tests/seguridad.test.mjs",
+    "test:api": "bash tests/api.sh"
+  }
+}
