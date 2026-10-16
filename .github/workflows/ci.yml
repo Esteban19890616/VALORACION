@@ -61,3 +61,55 @@ jobs:
       - name: Registro de errores del servidor (si algo falló)
         if: failure()
         run: cat /tmp/si360-php.log "$RUNNER_TEMP"/si360-privado/registro/errores.log 2>/dev/null || true
+
+  # Publicación en Hostinger por FTP, solo si las pruebas pasan y solo desde main.
+  # Requiere tres secretos del repositorio (Settings → Secrets and variables → Actions):
+  #   FTP_SERVIDOR  host o IP FTP que muestra hPanel (Archivos → Cuentas FTP)
+  #   FTP_USUARIO   cuenta FTP limitada a public_html/diagnostico
+  #   FTP_CLAVE     su contraseña
+  # No toca la configuración privada (si360-privado/ está fuera de la carpeta de la cuenta FTP).
+  publicar:
+    needs: pruebas
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency: publicacion-hostinger
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verificar secretos
+        env:
+          FTP_SERVIDOR: ${{ secrets.FTP_SERVIDOR }}
+          FTP_USUARIO: ${{ secrets.FTP_USUARIO }}
+          FTP_CLAVE: ${{ secrets.FTP_CLAVE }}
+        run: |
+          if [ -z "$FTP_SERVIDOR" ] || [ -z "$FTP_USUARIO" ] || [ -z "$FTP_CLAVE" ]; then
+            echo "::warning::Faltan los secretos FTP_SERVIDOR, FTP_USUARIO o FTP_CLAVE: no se publica."
+            echo "omitir=1" >> "$GITHUB_ENV"
+          fi
+
+      - name: Preparar solo los archivos del sitio
+        if: env.omitir != '1'
+        run: |
+          mkdir -p "$RUNNER_TEMP/sitio"
+          rsync -a ./ "$RUNNER_TEMP/sitio/" \
+            --exclude .git --exclude .github --exclude tests --exclude tools --exclude docs \
+            --exclude database --exclude dist --exclude node_modules --exclude 'package*.json' \
+            --exclude iniciar.bat --exclude 'backend/config.local.php' --exclude '*.md'
+          echo "Archivos a publicar: $(find "$RUNNER_TEMP/sitio" -type f | wc -l)"
+
+      - name: Publicar en Hostinger (lftp, TLS cuando el servidor lo ofrece)
+        if: env.omitir != '1'
+        env:
+          FTP_SERVIDOR: ${{ secrets.FTP_SERVIDOR }}
+          FTP_USUARIO: ${{ secrets.FTP_USUARIO }}
+          FTP_CLAVE: ${{ secrets.FTP_CLAVE }}
+        run: |
+          sudo apt-get install -y -qq lftp >/dev/null
+          lftp -u "$FTP_USUARIO,$FTP_CLAVE" "$FTP_SERVIDOR" <<LFTP
+          set ftp:ssl-allow yes
+          set ssl:verify-certificate no
+          set net:max-retries 3
+          set net:timeout 30
+          mirror --reverse --delete --verbose --parallel=4 "$RUNNER_TEMP/sitio/" ./
+          bye
+          LFTP

@@ -100,6 +100,23 @@ Las subcarpetas `archivos/`, `sesiones/`, `respaldos/` y `registro/` se crean so
 
 ---
 
+### 5-B. Alternativa: publicar con GitHub Actions por FTP
+
+La conexión Git de hPanel admite **un solo repositorio por dominio**. Si ese espacio ya lo usa otro proyecto (por ejemplo, otro subdominio con implementación automática), no lo reemplace. Use el trabajo `publicar` de `.github/workflows/ci.yml`:
+
+1. hPanel → **Archivos** → **Cuentas FTP** → cree una cuenta con **Directorio** = la carpeta del sitio (por ejemplo `public_html/diagnostico`). Así la cuenta no puede tocar nada más.
+2. En GitHub: repositorio → *Settings* → *Secrets and variables* → *Actions* → *New repository secret*. Cree:
+   * `FTP_SERVIDOR`: el host o IP FTP que muestra hPanel.
+   * `FTP_USUARIO`: el usuario completo de la cuenta creada.
+   * `FTP_CLAVE`: su contraseña.
+3. Desde entonces, cada push a `main` ejecuta las pruebas y, **solo si pasan**, publica los archivos del sitio.
+   * Excluye pruebas, documentación, herramientas y la carpeta `database/`.
+   * Usa TLS cuando el servidor lo ofrece.
+   * `mirror --delete` deja la carpeta idéntica al repositorio.
+   * La carpeta privada no se toca porque está fuera del alcance de la cuenta FTP.
+
+La contraseña FTP vive solo en los secretos de GitHub: nunca en el código ni en esta documentación.
+
 ## 6. PHP y HTTPS
 
 1. hPanel → **Avanzado** → **Configuración de PHP**: seleccione **PHP 8.3**.
