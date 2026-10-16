@@ -15,7 +15,7 @@ try {
         $d = $cfg[$k]; if (!is_dir($d)) @mkdir($d, 0700, true);
         $v(is_dir($d) && is_writable($d), "Carpeta $k escribible ($d)");
         $raiz = dirname(__DIR__, 2);
-        $v(!str_starts_with(realpath($d) ?: $d, $raiz . DIRECTORY_SEPARATOR), "$k fuera de la carpeta del despliegue");
+        $v(!str_starts_with(realpath($d) ?: $d, $raiz . DIRECTORY_SEPARATOR) && !preg_match('#[/\\\\](public_html|www|htdocs)([/\\\\]|$)#i', realpath($d) ?: $d), "$k fuera del despliegue y de public_html");
     }
     $v(empty($cfg['permitir_instalacion_web']) || !SI360\Db::uno('SELECT 1 FROM `usuarios` LIMIT 1'), 'Instalación web desactivada tras la instalación');
     if (SI360\Esquema::instalado()) {

@@ -17,6 +17,8 @@ La aplicación busca `si360-privado/config.php` en la carpeta padre de `public_h
 
 `uXXXX` es su usuario de Hostinger. Puede verlo en hPanel o en la ruta que muestra el Administrador de archivos.
 
+**Si publica en un subdominio** (por ejemplo `diagnostico.su-dominio.com`), Hostinger crea su carpeta *dentro* del `public_html` del dominio principal: `…/domains/su-dominio.com/public_html/diagnostico/`. La carpeta privada sigue yendo en `…/domains/su-dominio.com/si360-privado/`. La aplicación sube por las carpetas buscando `si360-privado/` y descarta cualquier ubicación dentro de un `public_html`, `www` o `htdocs`.
+
 ---
 
 ## 1. Requisitos
