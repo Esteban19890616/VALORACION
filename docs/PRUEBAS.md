@@ -179,7 +179,7 @@ Contra PHP + MariaDB, sobre una base vacía.
   * Su huella coincide con la del navegador e incluye los adjuntos.
   * Importarlo sobre datos existentes se rechaza.
 
-Las mismas pruebas están configuradas en `.github/workflows/ci.yml` sobre **MySQL 8.0**. Se ejecutarán con el primer push a GitHub; en este entorno se probaron solo sobre MariaDB, con una simulación local del flujo de integración continua y la configuración fuera del proyecto: 27 de 27.
+Las mismas pruebas corren en `.github/workflows/ci.yml` sobre **MySQL 8.0**. Primera ejecución en GitHub Actions (16-oct-2026, ejecución 38971239436): **todas superadas** (unitarias, sintaxis PHP, esquema al día e integración de la API).
 
 ## C. Navegador en modo servidor (la misma interfaz contra PHP + MariaDB)
 
